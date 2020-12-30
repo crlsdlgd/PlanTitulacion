@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <h:outputStylesheet library="css" name="style.css"/>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Registar Nuevo Tema</title>
+            </f:facet>
+
+        </h:head>
+
+        <h:body>
+            <ui:decorate template="template.xhtml"></ui:decorate>
+            
+            <h:form>
+                <p:outputLabel value="#{controladorUsuario.user.nick}" />
+                <p:panelGrid columns="2" styleClass="showcase-text-align-center" style="width: 50%;" >
+                    <h:outputText value="Tema" /> 
+                    <p:inputText placeholder="Ingrese tema" value="#{controladorPlan.txtTema}" />
+
+                    <h:outputText value="Fecha" /> 
+                    <p:calendar value="#{controladorPlan.txtFecha}" mode="popup" showOn="button" />
+
+                </p:panelGrid >
+                <p:panelGrid columns="3" styleClass="showcase-text-align-center" style="width: 50%;">
+                    <h:outputText value="Estudiantes" /> 
+                    <p:autoComplete id="acSimple" minQueryLength="3" queryDelay="1000" maxResults="5"
+                                    value="#{controladorPlan.txtEstudiante}" 
+                                    completeMethod="#{controladorPlan.autoCompletarEstudiante}" >
+                        <p:ajax event="itemSelect" update="@this"/>
+
+                    </p:autoComplete>
+                    <p:commandButton value="Añadir Estudiante" actionListener="#{controladorPlan.anadirEstudiante()}" update="data"/>
+                </p:panelGrid>
+                <p:dataTable id="data" var="estudiante" value="#{controladorPlan.listIntegrantes}">
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{estudiante}"/>
+                    </p:column>
+                    <p:column headerText="Acciones">
+                        <p:commandLink value="Quitar Estudiante" actionListener="#{controladorPlan.quitarEstudiante(estudiante)}" update="data" ajax="false"/>
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="Guardar Cambios" actionListener="#{controladorPlan.guardarPlan()}" style="background-color: #5ce620"/>
+                <p:commandButton value="Regresar" action="#{controladorUsuario.redireccionRol()}"/>
+            </h:form>
+        </h:body>
+
+    </f:view>
+</html>
+
