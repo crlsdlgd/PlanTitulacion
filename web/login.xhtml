@@ -8,6 +8,7 @@
     <f:view contentType="text/html">
         <h:head>
             <h:outputStylesheet library="css" name="style.css"/>
+            <script src="https://www.google.com/recaptcha/api.js"></script>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
                 <title>Login</title>
@@ -24,14 +25,20 @@
                         <br/>
                         <p:password class="centrar" placeholder="Contraseña" value="#{controladorUsuario.password}"/>
                         <br/>
+                        <!--*************ReCaptcha localhost******************-->
+                        <!--<div style="display: flex;justify-content: center;width: 100%;" class="g-recaptcha" data-sitekey="6LeHoCQaAAAAACcmq_ZllX_2dEj4APwoR-uHNUyV"></div>-->
+                        <!--*************ReCaptcha Digital Ocean******************-->
+                        <div style="display: flex;justify-content: center;width: 100%;" class="g-recaptcha" data-sitekey="6LcZ4SQaAAAAAJM9BVaFKzSr-HMOmJYaH1o6meM1"></div>
+                        <br/>
                         <p:commandButton value="Ingresar" action="#{controladorUsuario.login()}" update="mensajes :dlgRol"/>                        
                     </div>
 
                 </h:form>
             </div>
 
-            <p:dialog id="dlgRol" widgetVar="wlgRol" header="Ingresar con funciones de ..." modal="true" >
-                <h:form>
+            <p:dialog id="dlgRol" widgetVar="wlgRol" header="Ingresar con funciones de ..." modal="true" width="300px">
+
+                <h:form class="centrar">
                     <h:selectOneMenu value="#{controladorUsuario.rolSelect}" class="form-control" >
                         <f:selectItem itemLabel="Selecione un rol" itemValue=""/>
                         <f:selectItems value="#{controladorUsuario.listaRolUser}"  var="rol" itemLabel="#{rol}" itemValue="#{rol}"/>

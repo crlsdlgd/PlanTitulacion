@@ -8,7 +8,7 @@ import javax.ejb.Local;
 
 @Local
 public interface UsuarioDao {
-    public void registrar(Usuario usuario) throws Exception;
+    public boolean registrar(Usuario usuario) throws Exception;
     public List<Usuario> listarUsuario() throws Exception;
     public List<Usuario> listarUserByPlan(Plan plan) throws Exception;
     Usuario buscarUsuarioLogin(String nick, String pass)throws Exception;

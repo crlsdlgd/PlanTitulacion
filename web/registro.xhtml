@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html" transient="true">
+        <h:head>
+            <h:outputStylesheet library="css" name="style.css"/>
+            <script src="https://www.google.com/recaptcha/api.js"></script>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Registro</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <ui:decorate template="template_1.xhtml"></ui:decorate>
+            <div class="container">
+                <h:form id="formRegistro">
+                    <p:messages id="mensajes"/>                 
+
+                    <p:panel header="registro de Estudiante">
+                        <h:panelGrid columns="2">
+                            <p:outputLabel value="Nombre: " id="lblNombre" for="inpNombre" />
+                            <p:inputText value="#{controladorUsuario.nombre}" id="inpNombre"/> 
+
+                            <p:outputLabel value="Número de Cédula: " />
+                            <p:inputText value="#{controladorUsuario.cedula}"/> 
+
+                            <p:outputLabel value="Correo Institucional UCE: " />
+                            <p:inputText value="#{controladorUsuario.correo}"/> 
+
+                            <p:outputLabel value="Contraseña: " />
+                            <p:password value="#{controladorUsuario.password}"/>
+
+                            <p:outputLabel value="Repita Contraseña: " />
+                            <p:password value="#{controladorUsuario.password2}"/>
+                        </h:panelGrid>
+                    </p:panel>
+
+                    <!--*************ReCaptcha localhost******************-->
+                    <!--<div style="display: flex;justify-content: center;width: 100%;" class="g-recaptcha" data-sitekey="6LeHoCQaAAAAACcmq_ZllX_2dEj4APwoR-uHNUyV"></div>-->
+                    <!--*************ReCaptcha Digital Ocean******************-->
+                    <div style="display: flex;justify-content: center;width: 100%;" class="g-recaptcha" data-sitekey="6LcZ4SQaAAAAAJM9BVaFKzSr-HMOmJYaH1o6meM1"></div>
+                    <br/>
+                    <div class="centrar">
+                         <p:commandButton value="Registrarse" action="#{controladorUsuario.verificarCatpchaRegistro()}"/>                       
+                        <p:commandButton value="Cancelar" action="inicio" />                       
+                    </div>
+                </h:form>
+            </div>
+
+            <p:dialog id="dlgRegistro" widgetVar="wlgRegistro" header="ADVERTENCIA" modal="true" width="400px">
+
+                <h:form>
+                    <p:outputLabel value="El registro de usuarios esta únicamente disponible para ESTUDIANTES de la carrera de Ingeniería Informática de la Facultad de Ingeniería Ciencias Físicas y Matemática de la Universidad Central del Ecuador. Si usted es Docente, Administrativo, Director de la carrera pruebe ingresar con su nick y clave institucional. Si no puede ingresar póngase en contacto con soporte técnico." />
+                    <div class="centrar">
+                        <p:commandButton value="Registrarse" action="#{controladorUsuario.guardarUsuario()}" update=":formRegistro:mensajes" oncomplete="PF('wlgRegistro').hide();"/>  
+                        <p:commandButton value="Cancelar" oncomplete="PF('wlgRegistro').hide();" />
+                    </div>
+                </h:form>
+            </p:dialog>
+
+        </h:body>
+
+    </f:view>
+</html>
+

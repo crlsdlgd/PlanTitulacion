@@ -17,21 +17,23 @@
 
         <h:body>
             <ui:decorate template="template.xhtml"></ui:decorate>
-            
+
             <h:form>
                 <p:growl id="growl" life="3000" />
                 <p:outputLabel value="#{controladorUsuario.user.nick}" />
-                <p:panelGrid columns="2" styleClass="showcase-text-align-center" style="width: 50%;" >
-                    <h:outputText value="Tema Propuesto" /> 
-                    <p:inputText placeholder="Ingrese tema propuesto" value="#{controladorPlan.txtTema}" />
+                <p:panel header="Proponer tema de Tesís" >
+                    <h:panelGrid columns="2" >
+                        <h:outputText value="Tema Propuesto " /> 
+                        <p:inputText placeholder="Ingrese tema propuesto " value="#{controladorPlan.txtTema}" />
 
-                    <h:outputText value="Detalle" /> 
-                    <p:inputTextarea rows="6" cols="33" value="#{controladorPlan.txtDetalle}" />
+                        <h:outputText value="Detalle" /> 
+                        <p:inputTextarea rows="6" cols="33" value="#{controladorPlan.txtDetalle}" />
 
-                </p:panelGrid >
-                
-                <p:commandButton value="Guardar Cambios" actionListener="#{controladorPlan.guardarPropuestaPlan()}" style="background-color: #5ce620" update="growl" ajax="false"/>
-                <p:commandButton value="Regresar" action="#{controladorUsuario.redireccionRol()}"/>
+                    </h:panelGrid >
+
+                    <p:commandButton value="Guardar Cambios" actionListener="#{controladorPlan.guardarPropuestaPlan()}" style="background-color: #5ce620" update="growl" ajax="false"/>
+                    <p:commandButton value="Regresar" action="#{controladorUsuario.redireccionRol()}"/>
+                </p:panel>
             </h:form>
         </h:body>
 

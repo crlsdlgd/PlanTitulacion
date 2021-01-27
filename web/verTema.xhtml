@@ -19,17 +19,19 @@
             <ui:decorate template="template.xhtml"></ui:decorate>
             <f:event type="preRenderView" listener="#{controladorPlan.cargarPlanesAprobados()}"/>
             <h:form>
-                <p:dataTable id="data" var="plan" value="#{controladorPlan.listaPlan}" >
-                    <p:column headerText="Tema">
-                        <h:outputText value="#{plan.tema}"/>
-                    </p:column>
-                    <p:column headerText="Fecha">
-                        <h:outputText value="#{plan.fecha}" />
-                    </p:column>
-                    <p:column headerText="Estudiantes">
-                        <p:commandLink value="Ver Estudiantes" actionListener="#{controladorPlan.listarUsuarioByPlan(plan)}" oncomplete="PF('wdlWare').show();" update=":dlgWare"/>
-                    </p:column>        
-                </p:dataTable>
+                <p:panel header="Ver Temas" >
+                    <p:dataTable id="data" var="plan" value="#{controladorPlan.listaPlan}" >
+                        <p:column headerText="Tema">
+                            <h:outputText value="#{plan.tema}"/>
+                        </p:column>
+                        <p:column headerText="Fecha">
+                            <h:outputText value="#{plan.fecha}" />
+                        </p:column>
+                        <p:column headerText="Estudiantes">
+                            <p:commandLink value="Ver Estudiantes" actionListener="#{controladorPlan.listarUsuarioByPlan(plan)}" oncomplete="PF('wdlWare').show();" update=":dlgWare"/>
+                        </p:column>        
+                    </p:dataTable>
+                </p:panel>
             </h:form>
             <p:commandButton value="Regresar" action="#{controladorUsuario.redireccionRol()}"/>
             <p:dialog header="Integrantes" widgetVar="wdlWare" id="dlgWare">

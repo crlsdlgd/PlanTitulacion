@@ -12,8 +12,8 @@ public class ServicioEmail implements ServicioEmailLocal {
     //@EJB
     private PlanDaoImpl plan= new PlanDaoImpl();
 
-    //@Schedule(second = "0", minute = "0", hour = "8")
     //@Schedule(second = "0", minute = "*/5", hour = "*")
+    @Schedule(second = "0", minute = "0", hour = "8")
     public void BarrerPlan() throws Exception{
         System.out.println("empieza el servicio");
         plan.BarrerPlan();

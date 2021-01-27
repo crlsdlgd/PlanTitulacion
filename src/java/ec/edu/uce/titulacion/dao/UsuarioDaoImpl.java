@@ -12,20 +12,62 @@ import javax.ejb.Stateless;
 public class UsuarioDaoImpl extends DAO implements UsuarioDao {
 
     @Override
-    public void registrar(Usuario usuario) throws Exception {
-        try {
-            this.Conectar();
-            PreparedStatement st = this.getCn().prepareStatement("INSERT INTO usuario (nombre, email, password, nick) VALUES(?,?,?,?)");
-            st.setString(1, usuario.getNombre());
-            st.setString(2, usuario.getEmail());
-            st.setString(3, usuario.getPassword());
-            st.setString(4, usuario.getNick());
-            st.executeUpdate();
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            this.Cerrar();
+    public boolean registrar(Usuario usuario) throws Exception {
+        boolean cedulaCorrecta = comprobarCedula(usuario.getCedula());
+        boolean correoCorrecto = comprobarCorreoInstitucional(usuario.getEmail());
+        String nick = sacarNick(usuario.getEmail());
+        System.out.println("Cedula correcta: "+cedulaCorrecta+" Correo Correcto: "+correoCorrecto+" Nick: "+nick);
+        boolean flag=false;
+        if (cedulaCorrecta && correoCorrecto) {
+            try {
+                this.Conectar();
+                this.getCn().setAutoCommit(false);
+                System.out.println("Antes del primer insert 1");
+                PreparedStatement st = this.getCn().prepareStatement("INSERT INTO usuario (nombre, email, password, nick, cedula) VALUES(?,?,?,?,?)");
+                st.setString(1, usuario.getNombre());
+                st.setString(2, usuario.getEmail());
+                st.setString(3, usuario.getPassword());
+                st.setString(4, nick);
+                st.setString(5, usuario.getCedula());
+                System.out.println("Antes del primer insert 2");
+                st.executeUpdate();
+                System.out.println("Despues del primer insert");
+                st.close();
+                
+                System.out.println("hizo insert usuario y cerro conexion");
+                
+                PreparedStatement st2 = this.getCn().prepareStatement("SELECT MAX(id_usuario) AS id_usuario FROM usuario");
+                ResultSet rs;
+                int idUsuario = 0;
+                rs = st2.executeQuery();
+                while (rs.next()) {
+                    idUsuario = rs.getInt("id_usuario");
+                }
+                rs.close();
+                st2.close();
+                
+                System.out.println("consulto id de usaurio");
+                
+                PreparedStatement st3 = this.getCn().prepareStatement("INSERT INTO rol_usuario (id_rol,id_usuario) VALUES(1,?)");
+                st3.setInt(1, idUsuario);
+                st3.executeUpdate();
+                st3.close();
+                this.getCn().commit();
+                flag=true;
+                
+                System.out.println("Inserto el rol del usuario");
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("entro al rollback");
+                this.getCn().rollback();
+                return false;
+         
+            } finally {
+                this.Cerrar();
+            }
         }
+        return flag;
     }
 
     @Override
@@ -191,11 +233,81 @@ public class UsuarioDaoImpl extends DAO implements UsuarioDao {
             }
         } catch (Exception e) {
             throw e;
-        }finally{
+        } finally {
             this.Cerrar();
         }
         return user;
-        
+
+    }
+
+    private boolean comprobarCedula(String cedula) {
+        System.out.println("Cedula: "+cedula);
+        boolean flag = false;
+        int cont = 0;
+        if (cedula.length() == 10) {
+            for (int i = 0; i < cedula.length(); i++) {
+                if ((int) cedula.charAt(i) < 48 && (int) cedula.charAt(i) > 57) {
+                    return false;
+                }
+            }
+
+            int[] matriz = new int[10];
+            matriz[0] = Integer.parseInt(cedula.charAt(0) + "");
+            matriz[1] = Integer.parseInt(cedula.charAt(1) + "");
+            matriz[2] = Integer.parseInt(cedula.charAt(2) + "");
+            matriz[3] = Integer.parseInt(cedula.charAt(3) + "");
+            matriz[4] = Integer.parseInt(cedula.charAt(4) + "");
+            matriz[5] = Integer.parseInt(cedula.charAt(5) + "");
+            matriz[6] = Integer.parseInt(cedula.charAt(6) + "");
+            matriz[7] = Integer.parseInt(cedula.charAt(7) + "");
+            matriz[8] = Integer.parseInt(cedula.charAt(8) + "");
+            matriz[9] = Integer.parseInt(cedula.charAt(9) + "");
+
+            cont = (2 * (matriz[1] + matriz[3] + matriz[5] + matriz[7]))
+                    + matriz[0] + matriz[2] + matriz[4] + matriz[6] + matriz[8];
+
+            while (cont >= 10) {
+                cont -= 9;
+            }
+            if (cont == matriz[9]) {
+                flag = true;
+            }
+        }
+        else if(cedula.length()<10){
+            System.out.println("cedula con menos de 10 digitos");
+        }
+          else  {
+            System.out.println("cedula con mas de 10 digitos");
+        }
+        return flag;
+    }
+
+    private boolean comprobarCorreoInstitucional(String correo) {
+        System.out.println("Correo: "+correo);
+        String aux = "";
+        boolean flag = false;
+        if (correo.length() > 11) {
+            for (int i = correo.length() - 11; i < correo.length(); i++) {
+                aux = aux + correo.charAt(i);
+            }
+        }
+        else{
+            System.out.println("correo con menos de 11 caracteres");
+        }
+        if (aux.equals("@uce.edu.ec")) {
+            flag = true;
+        }
+        return flag;
+    }
+
+    private String sacarNick(String correo) {
+        String aux = "";
+        if (correo.length() > 11) {
+            for (int i = 0; i < correo.length() - 11; i++) {
+                aux = aux + correo.charAt(i);
+            }
+        }
+        return aux;
     }
 
 }

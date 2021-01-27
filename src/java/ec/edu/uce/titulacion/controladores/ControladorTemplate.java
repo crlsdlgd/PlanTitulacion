@@ -12,11 +12,10 @@ import javax.faces.context.FacesContext;
 public class ControladorTemplate implements Serializable{
 
     public void verificarSession() {
-        System.out.println("veririca sesion");
+        
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             Usuario us = (Usuario) context.getExternalContext().getSessionMap().get("usuario");
-            System.out.println("usuario recuperado: "+us.getNick());
             if(us==null){
                 context.getExternalContext().redirect("error.xhtml");
             }   

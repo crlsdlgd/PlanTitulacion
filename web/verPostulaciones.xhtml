@@ -19,21 +19,23 @@
             <ui:decorate template="template.xhtml"></ui:decorate>
             <f:event type="preRenderView" listener="#{controladorPlan.cargarMisPostulaciones()}"/>
             <h:form>
-                <p:dataTable id="data" var="plan" value="#{controladorPlan.listaPlan}" >
-                    <p:column headerText="Tema">
-                        <h:outputText value="#{plan.tema}"/>
-                    </p:column>
-                    <p:column headerText="Detalle">
-                        <h:outputText value="#{plan.detalle}" />
-                    </p:column>
-                    <p:column headerText="Propuesto por">
-                        <p:commandLink value="Ver Precursor" actionListener="#{controladorUsuario.verUsuarioPrecursor(plan)}" update=":dlgWare2"/>
-                    </p:column>         
-                </p:dataTable>
+                <p:panel header="Ver temas a los que he postulado" >
+                    <p:dataTable id="data" var="plan" value="#{controladorPlan.listaPlan}" >
+                        <p:column headerText="Tema">
+                            <h:outputText value="#{plan.tema}"/>
+                        </p:column>
+                        <p:column headerText="Detalle">
+                            <h:outputText value="#{plan.detalle}" />
+                        </p:column>
+                        <p:column headerText="Propuesto por">
+                            <p:commandLink value="Ver Precursor" actionListener="#{controladorUsuario.verUsuarioPrecursor(plan)}" update=":dlgWare2"/>
+                        </p:column>         
+                    </p:dataTable>
+                </p:panel>
             </h:form>
-<!--            <button value="Regresar" outcome="{controladorUsuario.redireccionRol()}"/>-->
+            <!--            <button value="Regresar" outcome="{controladorUsuario.redireccionRol()}"/>-->
             <p:commandButton value="Regresar" action="#{controladorUsuario.redireccionRol()}"/>
-            
+
             <p:dialog header="Precursor" widgetVar="wdlWare2" id="dlgWare2">
                 <h:form>
                     <p:outputLabel value="Nombre: #{controladorUsuario.usuarioPrecursor.nombre}" />

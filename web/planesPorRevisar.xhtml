@@ -21,23 +21,25 @@
 
             <h:form id="formu">
                 <p:growl id="growl" life="3000" />
-                <p:dataTable id="data" var="plan" value="#{controladorPlan.listaPlan}" >
-                    <p:column headerText="Tema">
-                        <h:outputText value="#{plan.tema}"/>
-                    </p:column>
-                    <p:column headerText="Detalle">
-                        <h:outputText value="#{plan.detalle}" />
-                    </p:column>
-                    <p:column headerText="Propuesto por">
-                        <p:commandLink value="Ver Precursor" actionListener="#{controladorUsuario.verUsuarioPrecursor(plan)}" update=":dlgWare2"/>
-                    </p:column>   
-                    <p:column headerText="Ver Integrantes">
-                        <p:commandLink value="Ver Integrantes" actionListener="#{controladorUsuario.verIntegrantes(plan)}" update=":dlgWare3"/>
-                    </p:column>
-                    <p:column headerText="Apto para Aprobar">
-                        <p:commandLink value="Aprobar Tema" actionListener="#{controladorPlan.selecionarPlan(plan)}"  oncomplete="PF('wdlWare4').show();" update=":dlgWare4"/>
-                    </p:column>
-                </p:dataTable>
+                <p:panel header="Planes de Tesis por revisar" >
+                    <p:dataTable id="data" var="plan" value="#{controladorPlan.listaPlan}" >
+                        <p:column headerText="Tema">
+                            <h:outputText value="#{plan.tema}"/>
+                        </p:column>
+                        <p:column headerText="Detalle">
+                            <h:outputText value="#{plan.detalle}" />
+                        </p:column>
+                        <p:column headerText="Propuesto por">
+                            <p:commandLink value="Ver Precursor" actionListener="#{controladorUsuario.verUsuarioPrecursor(plan)}" update=":dlgWare2"/>
+                        </p:column>   
+                        <p:column headerText="Ver Integrantes">
+                            <p:commandLink value="Ver Integrantes" actionListener="#{controladorUsuario.verIntegrantes(plan)}" update=":dlgWare3"/>
+                        </p:column>
+                        <p:column headerText="Apto para Aprobar">
+                            <p:commandLink value="Aprobar Tema" actionListener="#{controladorPlan.selecionarPlan(plan)}"  oncomplete="PF('wdlWare4').show();" update=":dlgWare4"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
             </h:form>
             <p:commandButton value="Regresar" action="#{controladorUsuario.redireccionRol()}"/>
 

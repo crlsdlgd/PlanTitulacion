@@ -19,6 +19,7 @@
             <ui:decorate template="template.xhtml"></ui:decorate>
             <f:event type="preRenderView" listener="#{controladorPlan.cargarPlanesNoAprobadosNiPostulados()}"/>
             <h:form id="form1">
+                <p:panel header="Ver Propuestas de Tesís" >
                 <p:growl id="growl2" life="3000" />
                 <p:dataTable id="data" var="plan" value="#{controladorPlan.listaPlan}" >
                     <p:column headerText="Tema">
@@ -34,7 +35,7 @@
                         <p:commandLink value="Postularme a este tema" actionListener="#{controladorPlan.postularTema(plan)}" update=":dlgPostulacion"/>
                     </p:column>
                 </p:dataTable>
-
+                </p:panel>
             </h:form>
             <p:commandButton value="Regresar" action="#{controladorUsuario.redireccionRol()}"/>
 
